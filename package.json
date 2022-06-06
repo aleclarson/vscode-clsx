@@ -1,11 +1,11 @@
 {
-  "name": "Classnameify",
-  "displayName": "Classnameify",
-  "publisher": "epadzensky",
-  "repository": "https://github.com/epadz/ClassNameify",
-  "description": "Convert ClassName prop from string to classNames. Also adds the import if needed",
-  "version": "0.1.4",
-  "icon": "classnameify.png",
+  "name": "clsx",
+  "displayName": "clsx",
+  "publisher": "ElegantStack",
+  "repository": "https://github.com/ElegantStack/clsx",
+  "description": "Convert ClassName prop from string to clsx. Also adds the import if needed",
+  "version": "0.1.0",
+  "icon": "clsx.png",
   "galleryBanner": {
     "theme": "dark"
   },
@@ -18,32 +18,32 @@
     "Other"
   ],
   "activationEvents": [
-    "*"
+    "onCommand:extension.clsx"
   ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "extension.classnameify",
-        "title": "Classname-ify"
+        "command": "extension.clsx",
+        "title": "Convert to clsx"
       }
     ],
     "menus": {
       "editor/context": [
         {
           "when": "resourceExtname == .tsx || resourceExtname == .jsx",
-          "command": "extension.classnameify",
+          "command": "extension.clsx",
           "group": "7_modification"
         }
       ]
     }
   },
   "scripts": {
-    "vscode:prepublish": "yarn run compile",
+    "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
     "lint": "eslint src --ext ts",
     "watch": "tsc -watch -p ./",
-    "pretest": "yarn run compile && yarn run lint",
+    "pretest": "npm run compile && npm run lint",
     "test": "node ./out/test/runTest.js"
   },
   "prettier": {

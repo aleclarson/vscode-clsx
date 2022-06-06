@@ -11,27 +11,24 @@ import {
 } from 'vscode';
 
 const classNameStringRegex = /class(name)?="([^"]+)"/i;
-const classNamesImportRegex = /import \w+ from ['"]classnames['"](;)?/gi;
+const classNamesImportRegex = /import \w+ from ['"]clsx['"](;)?/gi;
 
 export function activate(context: ExtensionContext) {
-  const classNameify = commands.registerCommand(
-    'extension.classnameify',
-    () => {
-      try {
-        checkConditions();
-        const propPosition = getPropPosition();
-        const newPropText = getNewClassNameProp(propPosition);
-        getActiveEditor().edit((editBuilder) => {
-          editBuilder.replace(propPosition, newPropText);
-          addImportIfNeeded(editBuilder);
-        });
-      } catch (e) {
-        window.showErrorMessage(`Error: ${e.message}`);
-      }
-    },
-  );
+  const clsx = commands.registerCommand('extension.clsx', () => {
+    try {
+      checkConditions();
+      const propPosition = getPropPosition();
+      const newPropText = getNewClassNameProp(propPosition);
+      getActiveEditor().edit((editBuilder) => {
+        editBuilder.replace(propPosition, newPropText);
+        addImportIfNeeded(editBuilder);
+      });
+    } catch (e) {
+      window.showErrorMessage(`Error: ${e.message}`);
+    }
+  });
 
-  context.subscriptions.push(classNameify);
+  context.subscriptions.push(clsx);
 }
 
 function checkConditions(): void {
@@ -44,8 +41,8 @@ function checkConditions(): void {
     document.languageId !== 'typescriptreact' &&
     document.languageId !== 'javascriptreact'
   ) {
-    window.showErrorMessage('Must be jsx or tsx to use classnameify');
-    throw new Error('Must be jsx or tsx to use classnameify');
+    window.showErrorMessage('Must be jsx or tsx to use clsx');
+    throw new Error('Must be jsx or tsx to use clsx');
   }
 }
 
@@ -60,7 +57,7 @@ function getPropPosition(): Range {
   const startIndex = lineText.indexOf(propString);
   const endIndex = startIndex + propString.length;
   if (selectionIndex < startIndex || selectionIndex > endIndex) {
-    throw new Error('this is not a classnames prop');
+    throw new Error('this is not a clsx prop');
   }
   const startPosition = new Position(lineNumber, startIndex);
   const endPosition = new Position(lineNumber, endIndex);
@@ -88,28 +85,10 @@ function needsClassNamesImport(): boolean {
   return !classNamesImportRegex.test(getDocument().getText());
 }
 
-function getLastImportLine(): number {
-  let lastImportLine = 0;
-  while (
-    lastImportLine < getDocument().lineCount &&
-    getDocument().lineAt(lastImportLine).text.startsWith('import')
-  ) {
-    lastImportLine++;
-  }
-  if (lastImportLine >= getDocument().lineCount) {
-    throw new Error('could not find location to add import');
-  }
-  return lastImportLine;
-}
-
 function addImportIfNeeded(editBuilder: TextEditorEdit): void {
-  const lastImportLine = getLastImportLine();
   if (needsClassNamesImport()) {
-    const importPosition = new Position(lastImportLine, 0);
-    editBuilder.insert(
-      importPosition,
-      "import classNames from 'classnames';\n",
-    );
+    const importPosition = new Position(1, 0);
+    editBuilder.insert(importPosition, "import classNames from 'clsx';\n");
   }
 }
 
