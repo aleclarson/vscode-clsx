@@ -4,7 +4,7 @@
   "publisher": "ElegantStack",
   "repository": "https://github.com/ElegantStack/clsx",
   "description": "Convert ClassName prop from string to clsx. Also adds the import if needed",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "icon": "clsx.png",
   "galleryBanner": {
     "theme": "dark"

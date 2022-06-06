@@ -11,7 +11,7 @@ import {
 } from 'vscode';
 
 const classNameStringRegex = /class(name)?="([^"]+)"/i;
-const classNamesImportRegex = /import \w+ from ['"]clsx['"](;)?/gi;
+const classNamesImportRegex = /import \w+ from ['"]clsx['"](;)?/i;
 
 export function activate(context: ExtensionContext) {
   const clsx = commands.registerCommand('extension.clsx', () => {
