@@ -6,6 +6,7 @@ import {
   Position,
   TextEditor,
   TextDocument,
+  workspace,
   Selection,
   TextEditorEdit,
 } from 'vscode';
@@ -70,7 +71,12 @@ function getNewClassNameProp(propTextRange: Range): string {
   if (!className) {
     throw new Error('could not parse class prop');
   }
-  return `className={classNames('${className}')}`;
+
+  const importAlias = workspace
+    .getConfiguration('clsx')
+    .get<string>('importAlias');
+
+  return `className={${importAlias}('${className}')}`;
 }
 
 function getCurrentLineNumber(): number {
@@ -88,7 +94,11 @@ function needsClassNamesImport(): boolean {
 function addImportIfNeeded(editBuilder: TextEditorEdit): void {
   if (needsClassNamesImport()) {
     const importPosition = new Position(1, 0);
-    editBuilder.insert(importPosition, "import classNames from 'clsx';\n");
+    const importAlias = workspace
+      .getConfiguration('clsx')
+      .get<string>('importAlias');
+
+    editBuilder.insert(importPosition, `import ${importAlias} from 'clsx';\n`);
   }
 }
 

@@ -36,6 +36,17 @@
           "group": "7_modification"
         }
       ]
+    },
+    "configuration": {
+        "type": "object",
+        "title": "clsx",
+        "properties": {
+            "clsx.importAlias": {
+                "type": "string",
+                "default": "classNames",
+                "description": "Set the local alias of the clsx import"
+            }
+        }
     }
   },
   "scripts": {
